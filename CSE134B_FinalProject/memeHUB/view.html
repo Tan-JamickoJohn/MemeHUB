@@ -1,0 +1,194 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    
+        <title>MemeHUB ViewMeme</title>
+        <meta charset="utf-8">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="main.css">
+         
+     
+  </head>
+  <body>
+
+    <header>
+            <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                      <div class="navbar-header">
+                                 <img class="navbar-brand" src="https://i.imgur.com/HXhUAfp.png" class="img-responsive" alt=""  />
+                            
+                      </div>
+                      <ul class="nav navbar-nav">
+                        <li class="active"><a href="mymemes.html">Memes</a></li>
+                        <li><a href="create.html">Create</a></li>
+                        <li><a href="account.html">Account</a></li>
+                      </ul>
+                      <ul class="nav navbar-nav navbar-right">
+ 
+                            <li><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                      </ul>
+                    </div>
+                  </nav>
+    </header>
+
+    <main role="main">
+            <p id="the-title"class="meme-title"> title title title</p>  
+                  <div class="row">
+                        <div class="col-sm-2"  > </div>
+                        <div class="col-sm-8"  > 
+                            <div class="row row-img">  
+                            <div class="coollll">
+                                <img  id="the-meme"class="meme-img"  class="img-fluid" alt="Loading Image...">
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="meme-deets">
+                                <div class="row row-gray">
+                                        <div class="col-sm-6"  >   
+                                            <p id="meme-getl" class="meme-getl"><button id="share" data-toggle="modal" data-target="#share-link-modal" ><u> <span class="glyphicon glyphicon-link"></span> Get Shareable Link</u></button></p>
+                                        </div>
+                                        <div class="col-sm-2"> <a id="a-edit" ><span class="glyphicon glyphicon-pencil"></span> Edit</a></div>
+                                        <div class="col-sm-2"> <a  data-toggle="modal" data-target="#exampleModalLong"><span class="glyphicon glyphicon-remove"></span> Delete</a></div>
+                                        <div class="col-sm-2" id="the-dl"> </div>
+                                </div>
+                            </div> 
+                            </div>
+                        </div>
+                        <div class="col-sm-2"  > </div>
+                      </div>
+ 
+    </main>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"   aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              
+              <div style="padding-top:12px; ">
+                    <h5 class="modal-title" >Are You Sure You Want to Delete?</h5>
+              </div>
+              <div style="padding-top:12px; ">
+                    <button type="button" class="btn modal-btn" data-dismiss="modal">No</button>
+                    <button id="modal-yes" type="button" class="btn modal-btn" >Yes</button>
+              </div>
+           
+            </div>
+          
+ 
+          </div>
+        </div>
+    </div>
+    <div class="modal fade" id="share-link-modal" tabindex="-1" role="dialog"   aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  
+                  <div style="padding-top:12px; ">
+                        <h5 class="modal-title" >Shareable Link:</h5>
+                  </div>
+                  <div  id="modal-link"style="padding-top:12px; ">
+
+                  </div>
+               
+                </div>
+              
+     
+              </div>
+            </div>
+        </div>
+    <!-- firbase-->
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDZma0T6ifz0VM02V_2pWrjKXPM-RVseNU",
+            authDomain: "cse134b-memehub.firebaseapp.com",
+            databaseURL: "https://cse134b-memehub.firebaseio.com",
+            projectId: "cse134b-memehub",
+            storageBucket: "cse134b-memehub.appspot.com",
+            messagingSenderId: "11751058936"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script>
+        
+        firebase.auth().onAuthStateChanged(function(user){
+            
+            if(user){
+                
+                var userId = firebase.auth().currentUser.uid;
+                
+                firebase.database().ref('/users/' + userId +'/viewmeme/').once('value').then(function(snapshot) {
+                    var currKey=snapshot.val().key;
+                    
+                    firebase.database().ref('/users/' + userId +'/CustomMemes/' + currKey).once('value').then(function(ss) {
+                        var img_url = ss.val().url;
+                        document.getElementById("the-meme").src =  img_url;
+                        document.getElementById("the-title").innerHTML =  ss.val().title;
+                        document.getElementById("the-dl").innerHTML = `<a  id="dl_link" href="${img_url}" download ><span class="glyphicon glyphicon-download-alt"></span> Download </a> `; 
+                        document.getElementById("modal-link").innerHTML =  `<input type="text" value="${img_url}" disabled></input>`;
+                        document.getElementById("modal-yes").addEventListener('click',function(){
+                             var deleteRef = firebase.database().ref('/users/' + userId +'/CustomMemes/').child(currKey);
+                             
+                             deleteRef.remove().then(function(){
+                                
+                             }).catch(function(error){
+
+                             });
+                              deleteRef = firebase.database().ref('/users/' + userId +'/Memes/').child(ss.val().orig_key);
+                             
+                             deleteRef.remove().then(function(){
+                                alert("Delete Successful! Redirecting in 3...");
+                                setTimeout(function(){
+                                    location.href="mymemes.html";
+                                },3000);
+                             }).catch(function(error){
+
+                             });
+                           
+                            
+                        });
+                    });
+                });
+            
+            }else{
+                location.href="login.html";
+            }
+        });
+        
+        document.getElementById("a-edit").addEventListener('click',function(){
+            var userId = firebase.auth().currentUser.uid;  
+            firebase.database().ref('/users/' + userId +'/viewmeme/').once('value').then(function(snapshot) {
+                var currKey=snapshot.val().key;
+                                          
+                var updates = {};
+                var postData={
+                    key: currKey
+                };
+                updates['users/' + userId +'/editmeme/']  = postData;
+                firebase.database().ref().update(updates);
+                location.href="edit.html";
+
+            });
+        });
+    </script>
+
+ 
+  </body>
+</html>

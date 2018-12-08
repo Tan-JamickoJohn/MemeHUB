@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <title>MemeHUB ACC</title>
+    <meta charset="utf-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css">
+
+
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <img class="navbar-brand" src="https://i.imgur.com/HXhUAfp.png" class="img-responsive" alt="" />
+
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="mymemes.html">Memes</a></li>
+                    <li><a href="create.html">Create</a></li>
+                    <li class="active"><a href="account.html">Account</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li><a href="login.html" ><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main">
+        <div class="grid mx-auto">
+            <div class="row mx-auto" style="padding-top:75px;">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-6">
+                    <section class="edit-form"  >
+
+                        <form method="post" action="#" role="ed" id="form-ed">
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="ed-lab"> Your Email </p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-group"> 
+                                            <p id="acc-email"class="acc-email"> YourEmail@memehub.com </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="ed-lab"> Your new Password</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <input type="password" name="acc-pw" id="acc-pw" class="form-control input-lg"
+                                            placeholder="New Password" required="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="ed-lab">Confirm Password </p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-group"><input type="password" name="acc-cpw" id="acc-cpw" class="form-control input-lg"
+                                            placeholder="Confirm Password" required="" /> 
+                                    </div>
+                                </div>
+
+                            </div>
+                            <button id="acc-btn-submit" type="submit" name="go" class="btn btn-block   btn-sub">Edit</button>
+
+
+                        </form>
+
+                    </section>
+                </div>
+                <div class="col-md-3">
+
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+    <!-- firbase-->
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDZma0T6ifz0VM02V_2pWrjKXPM-RVseNU",
+            authDomain: "cse134b-memehub.firebaseapp.com",
+            databaseURL: "https://cse134b-memehub.firebaseio.com",
+            projectId: "cse134b-memehub",
+            storageBucket: "cse134b-memehub.appspot.com",
+            messagingSenderId: "11751058936"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script>
+        firebase.auth().onAuthStateChanged(function(user){
+            if(user){
+                var user = firebase.auth().currentUser;
+                 
+                document.getElementById("acc-email").innerHTML = user.email;
+                
+                document.getElementById("acc-btn-submit").addEventListener("click", function(e){
+                    e.preventDefault();
+                    if(document.getElementById("acc-pw").value == document.getElementById("acc-cpw").value && document.getElementById("acc-pw").value.length >7 ){
+                   
+                   var newPassword = document.getElementById("acc-cpw").value;
+                   user.updatePassword(newPassword).then(function() {
+                   // Update successful.
+                        alert("Update Success!");
+                        setTimeout(function(){location.href="mymemes.html"},200);
+                   }).catch(function(error) {
+                   // An error happened.
+                   });
+               }else if(document.getElementById("acc-pw").value != document.getElementById("acc-cpw").value ){
+                   alert("passwords do not match");
+               }else{
+                    alert("Password should be atleast 8 characters");
+               }
+                });
+                
+            }else{
+                alert("You're not logged in. Redirecting...");
+                location.href="login.html";
+            }
+        });
+        
+    </script>
+    <script>
+    </script>
+
+</body>
+
+</html>

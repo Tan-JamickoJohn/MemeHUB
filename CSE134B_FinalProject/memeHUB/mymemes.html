@@ -1,0 +1,124 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    
+        <title>MemeHUB Home</title>
+        <meta charset="utf-8">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="main.css">
+         
+     
+  </head>
+  <body  >
+
+    <header>
+            <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                      <div class="navbar-header">
+                                 <img class="navbar-brand" src="https://i.imgur.com/HXhUAfp.png" class="img-responsive" alt=""  />
+                            
+                      </div>
+                      <ul class="nav navbar-nav">
+                        <li class="active"><a href="mymemes.html">Memes</a></li>
+                        <li><a href="create.html">Create</a></li>
+                        <li><a href="account.html">Account</a></li>
+                      </ul>
+                      <ul class="nav navbar-nav navbar-right">
+ 
+                            <li><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                      </ul>
+                    </div>
+                  </nav>
+    </header>
+
+    <main role="main">
+        <div id="grid" class="grid mx-auto">
+ 
+            
+        </div>
+            
+ 
+    </main>
+    <!-- firbase-->
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDZma0T6ifz0VM02V_2pWrjKXPM-RVseNU",
+            authDomain: "cse134b-memehub.firebaseapp.com",
+            databaseURL: "https://cse134b-memehub.firebaseio.com",
+            projectId: "cse134b-memehub",
+            storageBucket: "cse134b-memehub.appspot.com",
+            messagingSenderId: "11751058936"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script>
+        firebase.auth().onAuthStateChanged(function(user){
+            if(user){
+                var user = firebase.auth().currentUser;
+                uload();
+            }else{
+            
+            }
+        });
+        function uload(){
+             
+            var user ;
+            var count = 0;
+            var grid = document.getElementById("grid");
+            var ctx;
+            firebase.auth().onAuthStateChanged(function(user){
+                if(user){
+                    user= firebase.auth().currentUser;
+                     
+                    var query = firebase.database().ref('users/' + user.uid  +'/CustomMemes').orderByKey();
+                     query.once("value")
+                    .then(function(snapshot) {
+                        snapshot.forEach(function(childSnapshot) {
+                            // key will be "ada" the first time and "alan" the second time
+                            var key = childSnapshot.key;
+                            
+                            // childData will be the actual contents of the child
+                            var childData = childSnapshot.val();
+                            
+                            grid.innerHTML += `<div class="row"><div class="col-md-3 "></div> <div class="col-md-6 "><button class=" btn  ameme" onclick="transfer('${key}')"> <p class="create-tit">"${childData.title}"</p> <img class="amememe"   src="${childData.url}"></button>  </div><div class="col-md-3 "></div></div>`;
+                            //<canvas id="cantvas${count}"></canvas> 
+                            count += 1;
+                        });
+                    });
+                }else{
+                   
+                }
+             });
+              
+
+        }
+
+        function  transfer(key){
+            
+            var userId = firebase.auth().currentUser.uid;                            
+            var updates = {};
+            var postData={
+                key: key
+            };
+            updates['users/' + userId +'/viewmeme/']  = postData;
+            firebase.database().ref().update(updates);
+            
+            location.href="view.html";
+        }
+
+    </script>
+ 
+
+ 
+  </body>
+</html>

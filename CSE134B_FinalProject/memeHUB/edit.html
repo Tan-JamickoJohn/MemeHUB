@@ -1,0 +1,361 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    
+        <title>MemeHUB Edit</title>
+        <meta charset="utf-8">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="main.css">
+         
+     
+  </head>
+  <body>
+
+    <header>
+            <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                      <div class="navbar-header">
+                                 <img class="navbar-brand" src="https://i.imgur.com/HXhUAfp.png" class="img-responsive" alt=""  />
+                            
+                      </div>
+                      <ul class="nav navbar-nav">
+                        <li class="active"><a href="mymemes.html">Memes</a></li>
+                        <li><a href="create.html">Create</a></li>
+                        <li><a href="account.html">Account</a></li>
+                      </ul>
+                      <ul class="nav navbar-nav navbar-right">
+ 
+                            <li><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                      </ul>
+                    </div>
+                  </nav>
+    </header>
+
+    <main role="main">
+            <p id="meme-title" class="meme-title"> title title title</p>  
+                  <div class="row">
+
+                        <div class="col-sm-6"  > 
+                            <div class="row row-img">  
+                            <div id="edit-meme" class="coollll">
+                                    
+                            </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-sm-6"  > 
+                                <div class="row">
+                                        <div class="col-sm-1"></div>
+                                        <div class="col-sm-9">
+                                                <section class="edit-form">
+                      
+                                                        <form method="post" action="#" role="ed" id="form-ed">
+                                                            
+                                                          <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="ed-lab"> Top Text: </p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <div class="form-group"><input type="text" name="top=text" id="ed-toptext" placeholder="TOPTEXT" required class="form-control input-lg"  />  </div>
+                                                            </div>
+                                                          </div>                                                          
+                                                          <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="ed-lab"> Bottom Text:</p>           
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <div class="form-group"> 
+                                                                     <input type="text" name="bot-text" id="ed-botext" class="form-control input-lg"   placeholder="BOTTEXT" required="" /> </div> 
+                                                                </div>
+                                                          </div>
+                                                          <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="ed-lab">Title: </p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                    <div class="form-group"><input type="text" name="title" id="ed-title"class="form-control input-lg"   placeholder="Title" required="" />   </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <button id="ed-btn-submit" type="submit" name="go" class="btn btn-block   btn-sub">Edit</button>
+                                                          
+                                                          
+                                                          
+                                                          
+                                                             
+                                                        </form>
+                                                    
+                                                      </section> 
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                    </div>
+                        </div>
+                      </div>
+ 
+    </main>
+ 
+ 
+    <!-- firbase-->
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDZma0T6ifz0VM02V_2pWrjKXPM-RVseNU",
+            authDomain: "cse134b-memehub.firebaseapp.com",
+            databaseURL: "https://cse134b-memehub.firebaseio.com",
+            projectId: "cse134b-memehub",
+            storageBucket: "cse134b-memehub.appspot.com",
+            messagingSenderId: "11751058936"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script>
+        const cors = require('cors')({origin: true});
+        var title, topTextInput, bottomTextInput, topTextSizeInput, bottomTextSizeInput, imageInput, generateBtn, canvas, ctx, title;
+             imageInput = new Image();
+             firebase.auth().onAuthStateChanged(function(user){
+            
+            if(user){
+                
+                var userId = firebase.auth().currentUser.uid;
+                
+                firebase.database().ref('/users/' + userId +'/editmeme/').once('value').then(function(snapshot) {
+                    var currKey=snapshot.val().key;
+                    
+                    firebase.database().ref('/users/' + userId +'/CustomMemes/' + currKey).once('value').then(function(ss) {
+                        var img_url = ss.val().url;
+                        document.getElementById("edit-meme").innerHTML = `<img  class="meme-img"  class="img-fluid" src="${img_url}">`;
+                        document.getElementById("meme-title").innerHTML = ss.val().title; 
+                        firebase.database().ref('/users/' + userId +'/Memes/' + ss.val().orig_key).once('value').then(function(sss) {
+                            document.getElementById("ed-title").value = sss.val().title;
+                            document.getElementById("ed-botext").value = sss.val().botText;
+                            document.getElementById("ed-toptext").value = sss.val().topText;
+                            topTextSizeInput = sss.val().topSize;
+                            bottomTextSizeInput = sss.val().botSize;
+                            imageInput.src = sss.val().url;
+                            
+                            title = sss.val().title;
+                        });
+                    });
+                });
+            
+            }else{
+                location.href="login.html";
+            }
+        });
+
+         
+                var strg_cm = firebase.storage().ref('/CustomMemes/');
+                var strg_pic= firebase.storage().ref('/Images/');
+        
+                firebase.auth().onAuthStateChanged(function(user){
+                    if(user){
+                        var user = firebase.auth().currentUser;
+                    }else{
+                        alert("You're not logged in. Redirecting...");
+                        location.href="login.html";
+                    }
+                });
+         
+        
+ 
+                document.getElementById("ed-btn-submit").addEventListener("click", function (event) {
+                    event.preventDefault();
+                    init();
+                } );
+                
+        
+                function generateMeme(img, topText, bottomText, topTextSize, bottomTextSize) {
+                    let fontSize;
+        
+                    // Size canvas to image
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+        
+                    // Clear canvas
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    // Draw main image
+                    ctx.drawImage(img, 0, 0);
+        
+                    // Text style: white with black borders
+                    ctx.fillStyle = 'white';
+                    ctx.strokeStyle = 'black';
+                    ctx.textAlign = 'center';
+        
+                    // Top text font size
+                    fontSize = canvas.width * topTextSize;
+                    ctx.font = fontSize + 'px Impact';
+                    ctx.lineWidth = fontSize / 20;
+        
+                    // Draw top text
+                    ctx.textBaseline = 'top';
+                    topText.split('\n').forEach(function (t, i) {
+                        ctx.fillText(t, canvas.width / 2, i * fontSize, canvas.width);
+                        ctx.strokeText(t, canvas.width / 2, i * fontSize, canvas.width);
+                    });
+        
+                    // Bottom text font size
+                    fontSize = canvas.width * bottomTextSize;
+                    ctx.font = fontSize + 'px Impact';
+                    ctx.lineWidth = fontSize / 20;
+        
+                    // Draw bottom text
+                    ctx.textBaseline = 'bottom';
+                    bottomText.split('\n').reverse().forEach(function (t, i) { // .reverse() because it's drawing the bottom text from the bottom up
+                        ctx.fillText(t, canvas.width / 2, canvas.height - i * fontSize, canvas.width);
+                        ctx.strokeText(t, canvas.width / 2, canvas.height - i * fontSize, canvas.width);
+                    });
+                }
+        
+                function init() {
+                    // Initialize variables
+                     
+                    document.getElementById("edit-meme").innerHTML = `<canvas id="meme-canvas"class="meme-canvas"></canvas>`;
+                    topTextInput = document.getElementById('ed-toptext').value;
+                     
+                    bottomTextInput = document.getElementById('ed-botext').value;
+                    
+                    title = document.getElementById('ed-title').value;
+
+                    generateBtn = document.getElementById('ed-btn-submit');
+                    canvas = document.getElementById('meme-canvas');
+                     
+                    ctx = canvas.getContext('2d');
+        
+                    canvas.width = canvas.height = 0;
+        
+                    // Default/Demo text
+                    // topTextInput.value = bottomTextInput.value = 'Demo\nText';
+        
+                    // Generate button click listener
+                    generateBtn.addEventListener('click',_upload);
+                    
+                    
+        
+                }
+                init();
+                function generateUUID() { // from Public Domain/MIT
+                    var d = new Date().getTime();
+                    if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
+                        d += performance.now(); //use high-precision timer if available
+                    }
+                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                        var r = (d + Math.random() * 16) % 16 | 0;
+                        d = Math.floor(d / 16);
+                        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                    });
+                }
+                function _generate(){
+                        // Read image as DataURL using the FileReader API
+                        document.getElementById("generate-btn").click();
+                        let reader = new FileReader();
+                        reader.onload = function () {
+                            let img = new Image;
+                            img.src = reader.result;
+                            generateMeme(img, topTextInput.value, bottomTextInput.value, topTextSizeInput.value, bottomTextSizeInput.value);
+                        };
+                        reader.readAsDataURL(imageInput.files[0]);
+         
+                }
+                function _upload(){
+                       
+                        // Read image as DataURL using the FileReader API
+                        document.getElementById("ed-btn-submit").click();
+                         
+                            generateMeme(imageInput, topTextInput, bottomTextInput, topTextSizeInput, bottomTextSizeInput);
+                         
+                        setTimeout(function(){ 
+        
+                            var postKey; 
+                            var uploadTask;
+                            // Register three observers:
+                            // 1. 'state_changed' observer, called any time the state changes
+                            // 2. Error observer, called on failure
+                            // 3. Completion observer, called on successful completion
+                            var downloadURL;
+                            var userId = firebase.auth().currentUser.uid;
+                                    
+                            postKey = firebase.database().ref('users/' + userId +'/Memes').push().key;
+                            var updates = {};
+                            if(title.value==""){
+                                title.value="Untitled";
+                            }
+                                
+                            var postData={
+                                    url: imageInput.src,
+                                    title: title,
+                                    topText: topTextInput,
+                                    botText: bottomTextInput ,
+                                    topSize: topTextSizeInput ,
+                                    botSize: bottomTextSizeInput 
+                            };
+                            updates['users/' + userId +'/Memes/' + postKey]  = postData;
+                            firebase.database().ref().update(updates); 
+                           // alert(postKey);
+                            var cm_url;
+                            var blob;
+                             
+                            canvas = document.getElementById('meme-canvas');
+                            canvas.toBlob(function(blob){
+                                var image = new Image();
+                                image.src = blob;
+                                var uTask_cm = firebase.storage().ref('/CustomMemes/' + generateUUID()).put(blob);
+                                
+                                uTask_cm.on('state_changed', function(snapshot){
+                                // Observe state change events such as progress, pause, and resume
+                                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                console.log('Upload is ' + progress + '% done');
+                                switch (snapshot.state) {
+                                    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                                    console.log('Upload is paused');
+                                    break;
+                                    case firebase.storage.TaskState.RUNNING: // or 'running'
+                                    console.log('Upload is running');
+                                    break;
+                                }
+                                }, function(error) {
+                                // Handle unsuccessful uploads
+                                }, function() {
+                                // Handle successful uploads on complete
+                                // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                                uTask_cm.snapshot.ref.getDownloadURL().then(function(cm_url) {
+        
+                                    var userId = firebase.auth().currentUser.uid;                            
+                                    var pKey = firebase.database().ref('users/' + userId +'/CustomMemes').push().key;                           
+                                    var updates = {};
+                                    if(title.value==""){
+                                        title.value="Untitled";
+                                    }
+                                    var postData={
+                                        url: cm_url,
+                                        title: title.value,
+                                        orig_key: postKey
+                                    };
+                                    updates['users/' + userId +'/CustomMemes/' + pKey]  = postData;
+                                    firebase.database().ref().update(updates);
+                                    alert("Upload Successful");
+                                    setTimeout(function(){location.href = "mymemes.html";},3000);
+         
+                                });
+                                });
+                            }); 
+ 
+                        
+                        }, 100);
+                        
+  
+                    }
+ 
+        
+        </script>
+  </body>
+</html>

@@ -1,0 +1,261 @@
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.3/css/mdb.min.css);
+
+.navbar-default{
+    background-color: black;
+}
+#form-login, #form-su{
+    background: black !important;
+    padding: 30px;
+    border-radius: 10px;
+    padding-bottom: 50px;
+    
+}
+body{
+    background: black ;
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+    color: black;
+    background-color: #FFA500;
+    font-weight: bold;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #FFA500;
+    font-weight: bold;
+}
+ 
+.login-form, .su-form {
+    margin-top: 30%;
+    width: 100%;
+}
+.center{
+    text-align: center;
+}
+ 
+
+.form-group{
+    background: rgb(37, 37, 37);
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 30px;
+    color:white;
+}
+.login-form .form-control, .su-form .form-control{
+     
+    font-size: 60%;
+    color: black;
+    height: 20px;
+    padding-left: 5px;
+} 
+#form-login > *, #form-su > *{
+    margin-top: 10px;
+}
+
+ 
+#login-body, #su-body{
+    background: rgb(73, 72, 72);
+}
+
+#login-btn-submit, #su-btn-submit  {
+    background: #FFA500;
+    font-size: 90%;
+}
+
+#a-createacc, #a-home{
+    color: #FFA500;
+    text-align: center;
+}
+.form-bot{
+    padding-top:30px; 
+}
+.logo{
+    width:100%;
+ }
+.logo-nav{
+   padding: 5px;
+   margin-left: 2%;
+    
+   height:20%;
+}
+ 
+.navbar-brand{ 
+    padding:0px;
+    padding-left: 200px;
+}
+.navbar-right{
+    padding-right: 200px;
+}
+.carousel-inner > .item >img{
+    min-height : 300px;
+    max-height : 300px;
+    width : 100%;
+  }
+.card-img-top{
+     
+    padding: 2%;
+    max-height: 75%;
+    max-width: 90%; 
+}
+.row{
+    vertical-align: -webkit-baseline-middle;
+    padding: 10px;
+}
+.card-title {
+    color:#FFA500;
+    padding-left: 2%;
+}
+.text-muted{
+    color: white;
+    padding: 2%;
+}
+
+.meme-img { 
+    height: 350px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: solid  rgb(104, 104, 104) 3px;
+    border-radius: 5px;
+    
+}
+ 
+.meme-deets{
+     
+    height:auto;
+    color: white;
+}
+.meme-title{
+    color:#FFA500;
+    padding-left: 20%;
+    font-weight: bolder;
+    font-size: 30px;
+     
+}
+ 
+
+.modal-btn {
+    background-color:#FFA500;
+    color: black;
+    font-weight: bolder;
+    font-size: 12px; 
+    float:right;
+}
+ .modal-content {
+    background: black;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.modal-title{
+    color:white;
+    font-weight: bolder;
+    font-size: 15px;
+}
+.row-gray{
+    padding-top:20px;
+    background: rgb(48, 47, 47);
+    border-radius: 5px;
+}
+#ed-bot{
+    color:#FFA500;
+    
+}
+.btn-sub{
+    background-color:#FFA500;
+    color: black !important;
+    font-weight: bolder  ;
+    font-size: 20px; 
+     
+}
+input:focus,input {
+    color:white !important;
+    font-size: 20px !important;
+    padding-left:5px !important;
+}
+.ed-lab{
+    color:#FFA500;
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 15px;
+    
+}
+.edit-form{
+    border:solid rgb(26, 25, 25) 2px;
+    padding: 20px;
+    background: rgb(26, 25, 25);
+     
+}
+#ed-btn-submit{
+    color:black;
+}
+
+textarea:focus,textarea {
+    border-bottom: none!important;
+    box-shadow: none!important;
+  }
+
+.acc-email{
+    font-size:15px;
+    padding-top:8px;
+}
+#meme-canvas{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:20px;
+    border: solid  rgb(104, 104, 104) 5px;
+    border-radius: 5px;
+    max-width: 500px;
+}
+.create-tit{
+    font-weight:bold;
+    color: #FFA500;
+    font-size: 20px;
+    text-align: center;
+}
+.upload{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background: none;
+    font-size: 20px;
+    color:#FFA500;
+}
+.ameme{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:20px;
+
+    max-width: 500px;
+    background: black;
+
+}
+
+.amememe{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:20px;
+    border: solid  rgb(104, 104, 104) 5px;
+    border-radius: 5px;
+    max-width: 500px;
+    max-height: 400px;
+
+}
+
+#the-dl > a{
+    color:white;
+ 
+}
+#the-dl > a:hover{
+    color: #FFA500;
+ 
+}
+#share{
+    background: none;
+    border:none;
+}

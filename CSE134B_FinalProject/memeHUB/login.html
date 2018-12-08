@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MemeHUB Login</title>
+    <meta charset="utf-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- firbase-->
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDZma0T6ifz0VM02V_2pWrjKXPM-RVseNU",
+        authDomain: "cse134b-memehub.firebaseapp.com",
+        databaseURL: "https://cse134b-memehub.firebaseio.com",
+        projectId: "cse134b-memehub",
+        storageBucket: "cse134b-memehub.appspot.com",
+        messagingSenderId: "11751058936"
+      };
+      firebase.initializeApp(config);
+    </script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body id="login-body" onload="">
+  
+<div class="container">
+    <div class="row" id="pwd-container">
+        <div class="col-md-4"></div>
+        
+        <div class="col-md-4 ">
+          <section class="login-form">
+            <form method="post" action="mymemes.html" role="login" id="form-login">
+              <div><img class="logo"src="https://i.imgur.com/HXhUAfp.png" class="img-responsive" alt="" /></div>
+              <div class="form-group"><input type="email" name="email" id="login-email" placeholder="Email" required class="form-control input-lg"   /></div>
+              <div class="form-group"><input type="password" name="password" id="login-pw" class="form-control input-lg"   placeholder="Password" required="" />           </div>
+                           
+              
+              <button id="login-btn-submit" type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign in</button>
+              <div class="center form-bot"><a id="a-createacc" href="signup.html">Create account</a> </div>      
+         
+            </form>
+          </section>  
+          </div>
+          
+          <div class="col-md-4"></div>    
+        </div>       
+</div>
+<script>
+  firebase.auth().signOut();
+   
+  firebase.auth().onAuthStateChanged(function(user){
+    if(user){
+      
+    }else{
+       
+    }
+  });
+
+  document.getElementById("login-btn-submit").addEventListener("click", function (event) {
+      event.preventDefault();
+      var email = document.getElementById("login-email").value;
+      var pw = document.getElementById("login-pw").value;
+      firebase.auth().signInWithEmailAndPassword(email, pw)
+      .then(function name(user) {
+        alert("Login Successful");
+        location.href="mymemes.html";
+      })
+      .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+        alert(errorMessage);
+      });
+
+  });
+</script>
+</body>
+</html>

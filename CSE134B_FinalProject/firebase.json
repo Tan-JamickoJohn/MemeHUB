@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "memeHUB",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

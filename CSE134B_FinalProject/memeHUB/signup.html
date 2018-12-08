@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>MemeHUB Register</title>
+        <meta charset="utf-8">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="main.css">
+         
+     
+</head>
+<body id="su-body">
+  
+<div class="container">
+    <div class="row" id="pwd-container">
+        <div class="col-md-4"></div>
+        
+        <div class="col-md-4 ">
+         
+          <section class="su-form">
+              
+            <form data-toggle="validator" method="post" action="#" role="form" id="form-su">
+                
+              <img class="logo"src="https://i.imgur.com/HXhUAfp.png" class="img-responsive" alt="" />
+              <div class="form-group"><input type="email" name="email" id="su-email" placeholder="Email" required class="form-control input-lg"  />  </div>
+              <div class="form-group">  <input type="password" name="password" id="su-pw" minlength="8" class="form-control input-lg"   placeholder="Password" required="" /> </div>
+              <div class="form-group">
+                <input type="password" data-match="#su-pw"  name="confirmpw" id="su-cpw"class="form-control input-lg"   data-match-error="These don't match" placeholder="Confirm Password" required="" />
+                <div class="help-block with-errors"></div>
+              </div>
+              <button id="su-btn-submit" type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign up</button>
+              <div class="center form-bot"><a id="a-home" href="login.html">Back</a> </div>      
+                 
+            </form>
+        
+          </section>  
+         
+         </div>
+          
+          <div class="col-md-4"></div>           
+</div>
+</div>
+         <!-- firbase-->
+         <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+         <script>
+             // Initialize Firebase
+             var config = {
+                 apiKey: "AIzaSyDZma0T6ifz0VM02V_2pWrjKXPM-RVseNU",
+                 authDomain: "cse134b-memehub.firebaseapp.com",
+                 databaseURL: "https://cse134b-memehub.firebaseio.com",
+                 projectId: "cse134b-memehub",
+                 storageBucket: "cse134b-memehub.appspot.com",
+                 messagingSenderId: "11751058936"
+             };
+             firebase.initializeApp(config);
+         </script>
+         <script>
+ 
+                var fb= firebase.database().ref();
+                
+
+                document.getElementById("su-btn-submit").addEventListener("click", function (event) {
+                   event.preventDefault();
+                   re = /\S+@\S+\.\S+/;
+                   var email = document.getElementById("su-email").value;
+                   var pw = document.getElementById("su-pw").value;
+                   var cpw = document.getElementById("su-cpw").value;
+                   if(re.test(email) && pw.length>7 && cpw.length>7 && (pw==cpw)){
+                       firebase.auth().createUserWithEmailAndPassword(email, pw)
+                       .then(function(user) {
+                        var userId = firebase.auth().currentUser.uid;
+                        firebase.database().ref('users/' + userId).set({
+                                email: email,
+                                password:pw
+                        });
+                            alert("Signup Success!");
+                            location.href = "login.html";
+                       })
+                       .catch(function(error) {
+                           // no `if (error)` is needed here: if `catch` is called, there was an error
+                           var errorCode = error.code;
+                           var errorMessage = error.message;
+           
+                           window.alert("There went something wrong : " + errorMessage);
+                       });
+                   }else{
+                       if(!re.test(email)){
+                            alert("Invalid Email Format")  
+                       }else if(!(pw==cpw)){
+                            alert("Passwords do not match")
+                       }else if(!(pw.length<8)){
+                            alert("Invalid Password Length")
+                       }else{
+                            alert("invalid input");
+                       }
+                       
+                   }
+               });
+           
+           
+           
+           </script>
+</body>
+
+</html>
